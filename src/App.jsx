@@ -22,47 +22,58 @@ class App extends Component {
         }
       ]}; 
   }
-  onSubmit = evt => {
-    evt.preventDefault();
-    const newM = evt.target.elements.newinput;
-    const user = evt.target.elements.user;
-    const oldMessages = this.state.messages;
-    const newMessage = [
-      ...oldMessages,
-      {
-        username: user.value,
-        content: newM.value
-      }
-    ];
-    this.setState({ messages: newMessage });
-    newM.value = "";
-  };
+  // onSubmit = evt => {
+  //   evt.preventDefault();
+  //   const newM = evt.target.elements.newinput;
+  //   const user = evt.target.elements.user;
+  //   const oldMessages = this.state.messages;
+  //   const newMessage = [
+  //     ...oldMessages,
+  //     {
+  //       username: user.value,
+  //       content: newM.value
+  //     }
+  //   ];
+  //   this.setState({ messages: newMessage });
+  //   newM.value = "";
+  // };
   // in App.jsx
+  onSubmit = evt => {
+      evt.preventDefault();
+      
+      const newM = evt.target.elements.newinput;
+      const user = evt.target.elements.user;
+      const oldMessages = this.state.messages;
+      const newMessages = [
+        ...oldMessages,
+        newMessages
+      ];
+      const newMessage = 
+        {
+          username: user.value,
+          content: newM.value
+        }
+      this.setState({ messages: newMessage });
+      newM.value = "";
+      this.socket.send(`User: ${newMessage.username} said ${newMessage.content} `)
+      
+    };
 componentDidMount() {
   console.log("componentDidMount <App />");
   
-  setTimeout(() => {
-    console.log("Simulating incoming message");
-    // Add a new message to the list of messages in the data store
-    const newMessage = {id: 3, username: "Michelle", content: "Hello there!"};
-    const messages = this.state.messages.concat(newMessage)
-    // Update the state of the app component.
-    // Calling setState will trigger a call to render() in App and all child components.
-    this.setState({messages: messages})
-  }, 3000);
-  const socket = new WebSocket("ws://localhost:3001/")
+  this.socket = new WebSocket("ws://localhost:3001/")
   
-  socket.onopen = () => {
+  this.socket.onopen = () => {
     // on connecting, do nothing but log it to the console
     console.log('connected to the server')
+    
   }
 }
-
   render() {
     return (
       <div>
         <MessageList newMessages = {this.state.messages}/>
-        <ChatBar username = {this.state.currentUser.name} newMessage = {this.onSubmit}/>
+        <ChatBar  username = {this.state.currentUser.name} newMessage = {this.onSubmit} />
         
       </div>
       
