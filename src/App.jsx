@@ -44,18 +44,18 @@ class App extends Component {
       const newM = evt.target.elements.newinput;
       const user = evt.target.elements.user;
       const oldMessages = this.state.messages;
-      const newMessages = [
-        ...oldMessages,
-        newMessages
-      ];
-      const newMessage = 
-        {
-          username: user.value,
-          content: newM.value
-        }
+      const newMess = {
+        username: user.value,
+        content: newM.value
+      }
+      const newMessage = [
+            ...oldMessages,
+            newMess
+          ];
+     
       this.setState({ messages: newMessage });
       newM.value = "";
-      this.socket.send(`User: ${newMessage.username} said ${newMessage.content} `)
+      this.socket.send(`User: ${newMess.username} said ${newMess.content} `)
       
     };
 componentDidMount() {
