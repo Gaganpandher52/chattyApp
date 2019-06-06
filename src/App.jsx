@@ -10,34 +10,9 @@ class App extends Component {
     this.state = {loading: true,
       currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
       messages: [
-        {
-          id:1,
-          username: "Bob",
-          content: "Has anyone seen my marbles?",
-        },
-        {
-          id:2,
-          username: "Anonymous",
-          content: "No, I think you lost them. You lost your marbles Bob. You lost them for good."
-        }
+       
       ]}; 
   }
-  // onSubmit = evt => {
-  //   evt.preventDefault();
-  //   const newM = evt.target.elements.newinput;
-  //   const user = evt.target.elements.user;
-  //   const oldMessages = this.state.messages;
-  //   const newMessage = [
-  //     ...oldMessages,
-  //     {
-  //       username: user.value,
-  //       content: newM.value
-  //     }
-  //   ];
-  //   this.setState({ messages: newMessage });
-  //   newM.value = "";
-  // };
-  // in App.jsx
   onSubmit = evt => {
       evt.preventDefault();
       
@@ -55,7 +30,7 @@ class App extends Component {
      
       this.setState({ messages: newMessage });
       newM.value = "";
-      this.socket.send(`User: ${newMess.username} said ${newMess.content} `)
+      this.socket.send(JSON.stringify(newMess));
       
     };
 componentDidMount() {
