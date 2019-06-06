@@ -43,6 +43,10 @@ componentDidMount() {
     console.log('connected to the server')
     
   }
+  this.socket.onmessage = (event) => {
+    
+    // code to handle incoming message
+  }
 }
   render() {
     return (
