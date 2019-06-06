@@ -12,6 +12,7 @@ class App extends Component {
       messages: [
        
       ]}; 
+      
   }
   onSubmit = evt => {
       evt.preventDefault();
@@ -28,10 +29,9 @@ class App extends Component {
             newMess
           ];
      
-      this.setState({ messages: newMessage });
+      
       newM.value = "";
       this.socket.send(JSON.stringify(newMess));
-      
     };
 componentDidMount() {
   console.log("componentDidMount <App />");
@@ -43,9 +43,16 @@ componentDidMount() {
     console.log('connected to the server')
     
   }
-  this.socket.onmessage = (event) => {
-    
-    // code to handle incoming message
+  this.socket.onmessage = (event) =>{
+    console.log(event.data)
+    const obj = JSON.parse(event.data);
+    const newMessage ={
+      id:obj.id,
+      username:obj.username,
+      content:obj.content
+    }
+
+    this.setState({messages:[...this.state.messages, newMessage]})
   }
 }
   render() {
