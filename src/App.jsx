@@ -8,21 +8,28 @@ class App extends Component {
     super(props);
     // this is the *only* time you should assign directly to state:
     this.state = {loading: true,
-      currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
+      currentUser : 'Anynomouse', // optional. if currentUser is not defined, it means the user is Anonymous
       messages: [
        
       ]}; 
       
   }
   onSubmit = evt => {
-      evt.preventDefault();
+    
+      if(evt.key =='Enter'){
+        const messageI = document.getElementById('chatbar-msg')
+        const msg = messageI.value;
       
-      const newM = evt.target.elements.newinput;
-      const user = evt.target.elements.user;
+      // const newM = evt.target.elements.currentUser;
+      // const user = evt.target.elements.user;
       const oldMessages = this.state.messages;
+      const username1 = this.state.currentUser;
+      //const nameChange = evt.target.elemtent.user//new
+      
       const newMess = {
-        username: user.value,
-        content: newM.value
+        type:'postMessage',
+        username: username1,
+        content: msg
       }
       const newMessage = [
             ...oldMessages,
@@ -30,10 +37,30 @@ class App extends Component {
           ];
      
       
-      newM.value = "";
+      messageI.value = "";
       this.socket.send(JSON.stringify(newMess));
+      // this.socket.send(JSON.stringify(newChange));
+        }
     };
-componentDidMount() {
+
+ onChange = evt =>{
+
+    if(evt.key =='Enter'){
+    // const userq = evt.target.elements.user;
+    const nameInput = document.getElementById('chatbar-user');
+	  const newUserName = nameInput.value;
+    const newMessage = (this.state.currentUser + " changed the username to " + newUserName);
+    const newChange = {
+      type: 'postNotification',
+      content:newMessage
+    }
+  this.socket.send(JSON.stringify(newChange));
+  this.setState({ currentUser: newUserName });
+  }
+
+  }
+
+  componentDidMount() {
   console.log("componentDidMount <App />");
   
   this.socket = new WebSocket("ws://localhost:3001/")
@@ -51,15 +78,31 @@ componentDidMount() {
       username:obj.username,
       content:obj.content
     }
+    // switch(obj.type) {
+    //   case "incomingMessage":
+    //     // handle incoming message
+    //     this.setState({messages:[...this.state.messages, newMessage]})//incoming message
+    //     break;
+    //   case "incomingNotification":
+    //     // handle incoming notification
+    //     break;
+    //   default:
+    //     // show an error in the console if the message type is unknown
+    //     throw new Error("Unknown event type " + data.type);
+    // }
 
     this.setState({messages:[...this.state.messages, newMessage]})
+    }
   }
-}
   render() {
     return (
       <div>
+        <nav className="navbar">
+      <a href="/" className="navbar-brand">Chatty</a>
+      <p>users Online</p>
+      </nav>
         <MessageList newMessages = {this.state.messages}/>
-        <ChatBar  username = {this.state.currentUser.name} newMessage = {this.onSubmit} />
+        <ChatBar  username = {this.state.currentUser} newMessage = {this.onSubmit} newChange = {this.onChange} />
         
       </div>
       
