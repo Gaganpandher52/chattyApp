@@ -62,7 +62,7 @@ class App extends Component {
       console.log(event.data)
       const obj = JSON.parse(event.data);
       //checks for message or incoming/notification
-      if(obj.type ==='incomingMessage'){
+      if(obj.type ==='incomingMessage' || obj.type ==='incomingNotification'){
         const newMessage ={
           id:obj.id,
           username:obj.username,
@@ -71,23 +71,12 @@ class App extends Component {
         this.setState({messages:[...this.state.messages, newMessage]})
         return 
       }//if
-      if(obj.type ==='incomingNotification'){
-        const newMessage ={
-          id:obj.id,
-          username:obj.username,
-          content:obj.content
-        }
-        this.setState({messages:[...this.state.messages, newMessage]})
-        return 
-      }
-      
       if(obj.type ==='counter'){
         const obj = JSON.parse(event.data);
     
         this.setState({counter:obj.size})
         return
       }//if
-      
     }//onmessage
   }//component
   
