@@ -58,7 +58,7 @@ class App extends Component {
   this.setState({ currentUser: newUserName });
   }
 
-  }
+}
 
   componentDidMount() {
   console.log("componentDidMount <App />");
@@ -73,27 +73,28 @@ class App extends Component {
   this.socket.onmessage = (event) =>{
     console.log(event.data)
     const obj = JSON.parse(event.data);
+    if(event.type ==='incomingMessage'){
+    
     const newMessage ={
       id:obj.id,
       username:obj.username,
       content:obj.content
     }
-    // switch(obj.type) {
-    //   case "incomingMessage":
-    //     // handle incoming message
-    //     this.setState({messages:[...this.state.messages, newMessage]})//incoming message
-    //     break;
-    //   case "incomingNotification":
-    //     // handle incoming notification
-    //     break;
-    //   default:
-    //     // show an error in the console if the message type is unknown
-    //     throw new Error("Unknown event type " + data.type);
+    return this.setState({messages:[...this.state.messages, newMessage]})
+    // return
+      }//if
+    // if(event.type ==='counter'){
+    //   const obj = JSON.parse(event.data);
+    // const newCounter ={
+      
+    //   counter:obj.size
     // }
-
-    this.setState({messages:[...this.state.messages, newMessage]})
+    // // this.setState({counter:[...this.state.messages, newCounter]})
+    // }
     }
-  }
+
+  }//component
+  
   render() {
     return (
       <div>
