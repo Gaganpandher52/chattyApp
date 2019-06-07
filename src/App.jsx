@@ -73,24 +73,24 @@ class App extends Component {
   this.socket.onmessage = (event) =>{
     console.log(event.data)
     const obj = JSON.parse(event.data);
-    if(event.type ==='incomingMessage'){
+    if(obj.type ==='incomingMessage'){
     
     const newMessage ={
       id:obj.id,
       username:obj.username,
       content:obj.content
     }
-    return this.setState({messages:[...this.state.messages, newMessage]})
+    this.setState({messages:[...this.state.messages, newMessage]})
+    return 
     // return
-      }//if
-    // if(event.type ==='counter'){
-    //   const obj = JSON.parse(event.data);
-    // const newCounter ={
-      
-    //   counter:obj.size
-    // }
-    // // this.setState({counter:[...this.state.messages, newCounter]})
-    // }
+  }
+    
+    if(obj.type ==='counter'){
+      const obj = JSON.parse(event.data);
+   
+      this.setState({counter:obj.size})
+      return
+    }
     }
 
   }//component
@@ -100,7 +100,7 @@ class App extends Component {
       <div>
         <nav className="navbar">
       <a href="/" className="navbar-brand">Chatty</a>
-      <p>users Online</p>
+      <p>{this.state.counter} users Online</p>
       </nav>
         <MessageList newMessages = {this.state.messages}/>
         <ChatBar  username = {this.state.currentUser} newMessage = {this.onSubmit} newChange = {this.onChange} />
