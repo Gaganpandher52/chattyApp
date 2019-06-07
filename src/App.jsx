@@ -33,16 +33,16 @@ class App extends Component {
       messageI.value = "";
       this.socket.send(JSON.stringify(newMess));
     }//if
-    };
+  }
 
   onChange = evt =>{
     if(evt.key =='Enter'){
       const nameInput = document.getElementById('chatbar-user');
       const newUserName = nameInput.value;
-      const newMessage = (this.state.currentUser + " changed the username to " + newUserName);
+      const notification = (this.state.currentUser + " changed the username to " + newUserName);
       const newChange = {
         type: 'postNotification',
-        content:newMessage
+        content:notification
       }
       this.socket.send(JSON.stringify(newChange));
       this.setState({ currentUser: newUserName });
@@ -71,6 +71,15 @@ class App extends Component {
         this.setState({messages:[...this.state.messages, newMessage]})
         return 
       }//if
+      if(obj.type ==='incomingNotification'){
+        const newMessage ={
+          id:obj.id,
+          username:obj.username,
+          content:obj.content
+        }
+        this.setState({messages:[...this.state.messages, newMessage]})
+        return 
+      }
       
       if(obj.type ==='counter'){
         const obj = JSON.parse(event.data);
@@ -78,6 +87,7 @@ class App extends Component {
         this.setState({counter:obj.size})
         return
       }//if
+      
     }//onmessage
   }//component
   
@@ -88,11 +98,9 @@ class App extends Component {
       <a href="/" className="navbar-brand">Chatty</a>
       <p>{this.state.counter} users Online</p>
       </nav>
-        <MessageList newMessages = {this.state.messages}/>
+        <MessageList newMessages = {this.state.messages} />
         <ChatBar  username = {this.state.currentUser} newMessage = {this.onSubmit} newChange = {this.onChange} />
-        
       </div>
-      
     );
   }
 }//App
