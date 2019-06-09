@@ -59,22 +59,21 @@ class App extends Component {
     }
 
     this.socket.onmessage = (event) =>{
-      console.log(event.data)
-      const obj = JSON.parse(event.data);
+      //console.log(event.data)
+      const info = JSON.parse(event.data);
       //checks for message or incoming/notification
-      if(obj.type ==='incomingMessage' || obj.type ==='incomingNotification'){
+      if(info.type ==='incomingMessage' || info.type ==='incomingNotification'){
         const newMessage ={
-          id:obj.id,
-          username:obj.username,
-          content:obj.content
+          id:info.id,
+          username:info.username,
+          content:info.content,
         }
         this.setState({messages:[...this.state.messages, newMessage]})
         return 
       }//if
-      if(obj.type ==='counter'){
-        const obj = JSON.parse(event.data);
-    
-        this.setState({counter:obj.size})
+      if(info.type ==='counter'){
+        
+        this.setState({counter:info.size})
         return
       }//if
     }//onmessage
@@ -88,7 +87,7 @@ class App extends Component {
       <p>{this.state.counter} users Online</p>
       </nav>
         <MessageList newMessages = {this.state.messages} />
-        <ChatBar  username = {this.state.currentUser} newMessage = {this.onSubmit} newChange = {this.onChange} />
+        <ChatBar username = {this.state.currentUser} newMessage = {this.onSubmit} newChange = {this.onChange} />
       </div>
     );
   }
