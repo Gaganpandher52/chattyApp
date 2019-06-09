@@ -9,12 +9,13 @@ class App extends Component {
     super(props);
     //setting the state
     this.state = {loading: true,
-      currentUser : 'Anyonnomous',
+      currentUser : 'Anonymous',
       messages: [
       ]}; 
   }
+  // onSubmit method runs when pressing enter on content field
   onSubmit = evt => {
-    //initializa the event on enter
+    //initialize the event on enter
     if(evt.key =='Enter'){
       const messageI = document.getElementById('chatbar-msg')
       const msg = messageI.value;
@@ -34,7 +35,7 @@ class App extends Component {
       this.socket.send(JSON.stringify(newMess));
     }//if
   }
-
+  // onChange method runs when pressing enter on name field
   onChange = evt =>{
     if(evt.key =='Enter'){
       const nameInput = document.getElementById('chatbar-user');
@@ -83,9 +84,9 @@ class App extends Component {
     return (
       <div>
         <nav className="navbar">
-      <a href="/" className="navbar-brand">Chatty</a>
-      <p>{this.state.counter} users Online</p>
-      </nav>
+          <a href="/" className="navbar-brand">Chatty</a>
+          <p>{this.state.counter} users Online</p>
+        </nav>
         <MessageList newMessages = {this.state.messages} />
         <ChatBar username = {this.state.currentUser} newMessage = {this.onSubmit} newChange = {this.onChange} />
       </div>
